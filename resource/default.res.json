@@ -1,0 +1,70 @@
+{
+	"groups": [
+		{
+			"keys": "bg_jpg,egret_icon_png,description_json,wall2_jpg,flower_jpg,grass1_jpg,grass2_jpg,road1_jpg,road2_jpg,tree1_jpg,tree2_jpg,wall1_jpg",
+			"name": "preload"
+		}
+	],
+	"resources": [
+		{
+			"name": "bg_jpg",
+			"type": "image",
+			"url": "assets/bg.jpg"
+		},
+		{
+			"name": "egret_icon_png",
+			"type": "image",
+			"url": "assets/egret_icon.png"
+		},
+		{
+			"name": "description_json",
+			"type": "json",
+			"url": "config/description.json"
+		},
+		{
+			"name": "wall2_jpg",
+			"type": "image",
+			"url": "assets/wall2.jpg"
+		},
+		{
+			"name": "flower_jpg",
+			"type": "image",
+			"url": "assets/flower.jpg"
+		},
+		{
+			"name": "grass1_jpg",
+			"type": "image",
+			"url": "assets/grass1.jpg"
+		},
+		{
+			"name": "grass2_jpg",
+			"type": "image",
+			"url": "assets/grass2.jpg"
+		},
+		{
+			"name": "road1_jpg",
+			"type": "image",
+			"url": "assets/road1.jpg"
+		},
+		{
+			"name": "road2_jpg",
+			"type": "image",
+			"url": "assets/road2.jpg"
+		},
+		{
+			"name": "tree1_jpg",
+			"type": "image",
+			"url": "assets/tree1.jpg"
+		},
+		{
+			"name": "tree2_jpg",
+			"type": "image",
+			"url": "assets/tree2.jpg"
+		},
+		{
+			"name": "wall1_jpg",
+			"type": "image",
+			"url": "assets/wall1.jpg"
+		}
+	]
+}
