@@ -5,6 +5,7 @@ var AStar = (function () {
         this.heuristic = this.diagonal;
     }
     var d = __define,c=AStar,p=c.prototype;
+    ;
     p.findPath = function (tileMap) {
         var h = 0;
         var g = 0;
@@ -12,11 +13,11 @@ var AStar = (function () {
         this.tileMap = tileMap;
         this._open = [];
         this._closed = [];
-        this.startTile = tileMap._startNode;
-        this.endTile = tileMap._endNode;
-        this.startTile.data.g = 0;
-        this.startTile.data.h = this.heuristic(this.startTile);
-        this.startTile.data.f = this.startTile.data.g + this.startTile.data.h;
+        this.startTile = tileMap.startTile;
+        this.endTile = tileMap.endTile;
+        this.startTile.tileData.g = 0;
+        this.startTile.tileData.h = this.heuristic(this.startTile);
+        this.startTile.tileData.f = this.startTile.tileData.g + this.startTile.tileData.h;
         return this.search();
     };
     p.isOpen = function (tile) {
@@ -39,7 +40,7 @@ var AStar = (function () {
         var i = 0;
         var temp;
         for (var j = 0; j < this._open.length; j++) {
-            if (this._open[i].data.f > this._open[j].data.f) {
+            if (this._open[i].tileData.f > this._open[j].tileData.f) {
                 i = j;
             }
         }
@@ -53,35 +54,35 @@ var AStar = (function () {
     p.search = function () {
         var tile = this.startTile;
         while (tile != this.endTile) {
-            var startX = Math.max(0, tile.data.x - 1);
-            var endX = Math.min(this.tileMap._numCols - 1, tile.data.x + 1);
-            var startY = Math.max(0, tile.data.y - 1);
-            var endY = Math.min(this.tileMap._numRows - 1, tile.data.y + 1);
+            var startX = Math.max(0, tile.tileData.x - 1);
+            var endX = Math.min(this.tileMap.numCols - 1, tile.tileData.x + 1);
+            var startY = Math.max(0, tile.tileData.y - 1);
+            var endY = Math.min(this.tileMap.numRows - 1, tile.tileData.y + 1);
             for (var i = startX; i <= endX; i++) {
                 for (var j = startY; j <= endY; j++) {
                     var test = this.tileMap.getTile(i, j);
-                    if (test == tile || !test.data.walkable || !this.tileMap.getTile(tile.data.x, test.data.y).data.walkable || !this.tileMap.getTile(test.data.x, tile.data.y).data.walkable) {
+                    if (test == tile || !test.tileData.walkable || !this.tileMap.getTile(tile.tileData.x, test.tileData.y).tileData.walkable || !this.tileMap.getTile(test.tileData.x, tile.tileData.y).tileData.walkable) {
                         continue;
                     }
                     var cost = this.straightCost;
-                    if (!((tile.data.x == test.data.x) || (tile.data.y == test.data.y))) {
+                    if (!((tile.tileData.x == test.tileData.x) || (tile.tileData.y == test.tileData.y))) {
                         cost = this.diagCost;
                     }
-                    var g = tile.data.g + cost * test.data.costMultiplier;
+                    var g = tile.tileData.g + cost * test.tileData.costMultiplier;
                     var h = this.heuristic(test);
                     var f = g + h;
                     if (this.isOpen(test) || this.isClosed(test)) {
-                        if (test.data.f > f) {
-                            test.data.f = f;
-                            test.data.g = g;
-                            test.data.h = h;
+                        if (test.tileData.f > f) {
+                            test.tileData.f = f;
+                            test.tileData.g = g;
+                            test.tileData.h = h;
                             test.tileParent = tile;
                         }
                     }
                     else {
-                        test.data.f = f;
-                        test.data.g = g;
-                        test.data.h = h;
+                        test.tileData.f = f;
+                        test.tileData.g = g;
+                        test.tileData.h = h;
                         test.tileParent = tile;
                         this._open.push(test);
                     }
@@ -106,17 +107,17 @@ var AStar = (function () {
         }
     };
     p.emanhattan = function (tile) {
-        return Math.abs(tile.x - this.endTile.data.x) * this.straightCost +
-            Math.abs(tile.y + this.endTile.data.y) * this.straightCost;
+        return Math.abs(tile.x - this.endTile.tileData.x) * this.straightCost +
+            Math.abs(tile.y + this.endTile.tileData.y) * this.straightCost;
     };
     p.euclidian = function (tile) {
-        var dx = tile.x - this.endTile.data.x;
-        var dy = tile.y - this.endTile.data.y;
+        var dx = tile.x - this.endTile.tileData.x;
+        var dy = tile.y - this.endTile.tileData.y;
         return Math.sqrt(dx * dx + dy * dy) * this.straightCost;
     };
     p.diagonal = function (tile) {
-        var dx = Math.abs(tile.data.x - this.endTile.data.x);
-        var dy = Math.abs(tile.data.y - this.endTile.data.y);
+        var dx = Math.abs(tile.tileData.x - this.endTile.tileData.x);
+        var dy = Math.abs(tile.tileData.y - this.endTile.tileData.y);
         var diag = Math.min(dx, dy);
         var straight = dx + dy;
         return this.diagCost * diag + this.straightCost * (straight - 2 * diag);
