@@ -110,36 +110,36 @@ class AStar{
 
     }
 
-private buildPath():void{
-    
-    var tile:Tile = this.endTile;
-    this.pathArray.push(tile);
-    while(tile != this.startTile){
-        tile = tile.tileParent;
-        this.pathArray.unshift(tile);
+    private buildPath():void{
+        
+        var tile:Tile = this.endTile;
+        this.pathArray.push(tile);
+        while(tile != this.startTile){
+            tile = tile.tileParent;
+            this.pathArray.unshift(tile);
+        }
     }
-}
 
 
-private emanhattan(tile:Tile):number {
-    return Math.abs(tile.x - this.endTile.tileData.x) * this.straightCost +
-    Math.abs(tile.y + this.endTile.tileData.y) * this.straightCost;
-}
+    private emanhattan(tile:Tile):number {
+        return Math.abs(tile.x - this.endTile.tileData.x) * this.straightCost +
+        Math.abs(tile.y + this.endTile.tileData.y) * this.straightCost;
+    }
 
-private euclidian(tile:Tile):number
-{
-    var dx:number = tile.x - this.endTile.tileData.x;
-    var dy:number = tile.y - this.endTile.tileData.y;
-    return Math.sqrt(dx * dx + dy * dy) * this.straightCost;
-}
+    private euclidian(tile:Tile):number
+    {
+        var dx:number = tile.x - this.endTile.tileData.x;
+        var dy:number = tile.y - this.endTile.tileData.y;
+        return Math.sqrt(dx * dx + dy * dy) * this.straightCost;
+    }
 
-private diagonal(tile:Tile):number
-{
-    var dx:number = Math.abs(tile.tileData.x - this.endTile.tileData.x);
-    var dy:number = Math.abs(tile.tileData.y - this.endTile.tileData.y);
-    var diag:number = Math.min(dx, dy);
-    var straight:number = dx + dy;
-    return this.diagCost * diag + this.straightCost * (straight - 2 * diag);
-}
+    private diagonal(tile:Tile):number
+    {
+        var dx:number = Math.abs(tile.tileData.x - this.endTile.tileData.x);
+        var dy:number = Math.abs(tile.tileData.y - this.endTile.tileData.y);
+        var diag:number = Math.min(dx, dy);
+        var straight:number = dx + dy;
+        return this.diagCost * diag + this.straightCost * (straight - 2 * diag);
+    }
 
 }

@@ -144,17 +144,16 @@ class Main extends egret.DisplayObjectContainer {
 
         this.map01 = new TileMap();
         this.addChild(this.map01);
+        this.addChild(this.Player.PersonBitmap);
+        this.Player.PersonBitmap.x = 0;
+        this.Player.PersonBitmap.y = 0;
 
-         this.addChild(this.Player.PersonBitmap);
-         this.Player.PersonBitmap.x = 0;
-         this.Player.PersonBitmap.y = 0;
+        this.map01.startTile = this.map01.getTile(0,0);
+        this.map01.endTile = this.map01.getTile(0,0);
 
-         this.map01.startTile = this.map01.getTile(0,0);
-         this.map01.endTile = this.map01.getTile(0,0);
+        this.astar = new AStar();
 
-         this.astar = new AStar();
-
-            this.stage.addEventListener(egret.TouchEvent.TOUCH_BEGIN,(e : egret.TouchEvent)=>{
+        this.stage.addEventListener(egret.TouchEvent.TOUCH_BEGIN,(e : egret.TouchEvent)=>{
             this.ifStartMove = true;
             this.playerx = Math.floor(this.Player.PersonBitmap.x / this.tileSize);
             this.playery = Math.floor(this.Player.PersonBitmap.y / this.tileSize);
@@ -166,7 +165,7 @@ class Main extends egret.DisplayObjectContainer {
             this.EventPoint.y = e.stageY;
             this.tileX = Math.floor(this.EventPoint.x / this.tileSize);
             this.tileY = Math.floor(this.EventPoint.y / this.tileSize);
-        
+            
             this.map01.endTile = this.map01.getTile(this.tileX,this.tileY);
             this.ifFindAWay = this.astar.findPath(this.map01);
             if(this.ifFindAWay){
@@ -178,7 +177,7 @@ class Main extends egret.DisplayObjectContainer {
                 console.log(this.astar.pathArray[i].x + " And " + this.astar.pathArray[i].y);
             }
             if(this.ifFindAWay)
-            this.map01.startTile = this.map01.endTile;
+                this.map01.startTile = this.map01.endTile;
         },this)
         
             this.PlayerMove();
@@ -200,42 +199,42 @@ class Main extends egret.DisplayObjectContainer {
        var self:any = this;
        
        egret.Ticker.getInstance().register(()=>{
-    if(this.ifStartMove && self.ifFindAWay){
-       if(self.currentPath < self.astar.pathArray.length - 1){ 
-            var distanceX = self.astar.pathArray[self.currentPath + 1].x - self.astar.pathArray[self.currentPath].x;
-            var distanceY = self.astar.pathArray[self.currentPath + 1].y - self.astar.pathArray[self.currentPath].y;
+            if(this.ifStartMove && self.ifFindAWay){
+                if(self.currentPath < self.astar.pathArray.length - 1){ 
+                    var distanceX = self.astar.pathArray[self.currentPath + 1].x - self.astar.pathArray[self.currentPath].x;
+                    var distanceY = self.astar.pathArray[self.currentPath + 1].y - self.astar.pathArray[self.currentPath].y;
 
-            if(distanceX > 0){
-            self.Player.SetRightOrLeftState(new GoRightState(),self);
+                    if(distanceX > 0){
+                        self.Player.SetRightOrLeftState(new GoRightState(),self);
+                    }
+                    if(distanceX <= 0){
+                        self.Player.SetRightOrLeftState(new GoLeftState(),self);
+                    }
+                    if(!self.IfOnGoal(self.astar.pathArray[self.currentPath + 1])){
+                        self.Player.PersonBitmap.x += distanceX / self.movingTime;
+                        self.Player.PersonBitmap.y += distanceY / self.movingTime;
+                    }
+                    else{
+                        self.currentPath += 1;
+                    }
+                }
             }
-            if(distanceX <= 0){
-            self.Player.SetRightOrLeftState(new GoLeftState(),self);
+            if(this.ifStartMove && !self.ifFindAWay){
+                var distanceX = self.map01.startTile.x - self.playerBitX;
+                var distanceY = self.map01.startTile.y - self.playerBitY;
+                if(distanceX > 0){
+                    self.Player.SetRightOrLeftState(new GoRightState(),self);
+                }
+                if(distanceX <= 0){
+                    self.Player.SetRightOrLeftState(new GoLeftState(),self);
+                }
+                if(!self.IfOnGoal(self.map01.startTile)){
+                    self.Player.PersonBitmap.x += distanceX / self.movingTime;
+                    self.Player.PersonBitmap.y += distanceY / self.movingTime;
+                }
+                else
+                    self.Player.SetState(new IdleState(),self);
             }
-            if(!self.IfOnGoal(self.astar.pathArray[self.currentPath + 1])){
-               self.Player.PersonBitmap.x += distanceX / self.movingTime;
-               self.Player.PersonBitmap.y += distanceY / self.movingTime;
-            }
-            else{
-               self.currentPath += 1;
-            }
-          }
-    }
-    if(this.ifStartMove && !self.ifFindAWay){
-        var distanceX = self.map01.startTile.x - self.playerBitX;
-        var distanceY = self.map01.startTile.y - self.playerBitY;
-        if(distanceX > 0){
-            self.Player.SetRightOrLeftState(new GoRightState(),self);
-            }
-            if(distanceX <= 0){
-            self.Player.SetRightOrLeftState(new GoLeftState(),self);
-            }
-        if(!self.IfOnGoal(self.map01.startTile)){
-               self.Player.PersonBitmap.x += distanceX / self.movingTime;
-               self.Player.PersonBitmap.y += distanceY / self.movingTime;
-            }
-            else
-            self.Player.SetState(new IdleState(),self);
-    }
         },self)
       
    }
