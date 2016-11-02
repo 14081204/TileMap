@@ -2,8 +2,8 @@ class AStar{
     private _open : Tile[];
     private _closed : Tile[];
     private tileMap : TileMap;
-    public startTile : Tile;
-    public endTile : Tile;
+    public startNode : Tile;
+    public endNode : Tile;
     public pathArray : Tile[];
     private straightCost:number = 1.0;
     private diagCost:number = Math.SQRT2;
@@ -17,17 +17,17 @@ class AStar{
           this.tileMap = tileMap;
           this._open = [];
           this._closed = [];
-          this.startTile = tileMap.startTile;
-          this.endTile = tileMap.endTile;
-          this.startTile.tileData.g = 0;
-          this.startTile.tileData.h = this.heuristic(this.startTile);
-          this.startTile.tileData.f = this.startTile.tileData.g + this.startTile.tileData.h;
+          this.startNode = tileMap.startNode;
+          this.endNode = tileMap.endNode;
+          this.startNode.tileData.g = 0;
+          this.startNode.tileData.h = this.heuristic(this.startNode);
+          this.startNode.tileData.f = this.startNode.tileData.g + this.startNode.tileData.h;
           return this.search();
     }
 
     private isOpen(tile : Tile):any{
         for(var i = 0 ; i < this._open.length ; i++){
-            if( tile == this._open[i] ){
+            if( this._open[i] == tile ){
                 return true;
             }
         }
@@ -36,7 +36,7 @@ class AStar{
 
     private isClosed(tile : Tile):any{
         for(var i = 0 ; i < this._closed.length ; i++){
-            if( tile == this._closed[i] ){
+            if( this._closed[i] == tile ){
                 return true;
             }
         }
@@ -60,24 +60,27 @@ class AStar{
     }
 
     public search():any{
-        var tile = this.startTile;
+        var tile = this.startNode;
         
-        while( tile != this.endTile){
+        while( tile != this.endNode){
             var startX:number = Math.max(0, tile.tileData.x - 1);
             var endX:number = Math.min(this.tileMap.numCols - 1, tile.tileData.x + 1);
             var startY:number = Math.max(0, tile.tileData.y - 1);
             var endY:number = Math.min(this.tileMap.numRows - 1, tile.tileData.y + 1);
+
             for(var i:number = startX; i <= endX; i++){
                 for(var j:number = startY; j <= endY; j++){
                     var test:Tile = this.tileMap.getTile(i, j);
-                    if(test == tile ||!test.tileData.walkable ||!this.tileMap.getTile(tile.tileData.x, test.tileData.y).tileData.walkable ||!this.tileMap.getTile(test.tileData.x, tile.tileData.y).tileData.walkable){
+                    if(test == tile ||!test.tileData.walkable ||!this.tileMap.getTile(tile.tileData.x, test.tileData.y).tileData.walkable ||!this.tileMap.getTile(test.tileData.x, tile.tileData.y).tileData.walkable){                    
                         continue;
                     }
                     var cost:number = this.straightCost;
+                    //if(!((tile.tileData.x == test.tileData.x) || (tile.tileData.y == test.tileData.y))){
                     if(!((tile.tileData.x == test.tileData.x) || (tile.tileData.y == test.tileData.y))){
                         cost = this.diagCost;
                     }
-                    var g:number = tile.tileData.g + cost * test.tileData.costMultiplier;
+                    //var g:number = tile.tileData.g + cost * test.tileData.costMultiplier;                    
+                    var g:number = tile.tileData.g + cost;
                     var h:number = this.heuristic(test);
                     var f:number = g + h;
                     if(this.isOpen(test) || this.isClosed(test)){
@@ -95,7 +98,6 @@ class AStar{
                         test.tileParent = tile;
                         this._open.push(test);
                     }
-
                 }
             }
             this._closed.push(tile);
@@ -104,42 +106,49 @@ class AStar{
                 return false
             }
             tile = this.findMinFInOpenArray();
+            //this._open.sortOn("f", Array.NUMERIC);
         }
         this.buildPath();
         return true;
-
     }
 
     private buildPath():void{
-        
-        var tile:Tile = this.endTile;
+        this.pathArray = new Array();
+        var tile:Tile = this.endNode;
         this.pathArray.push(tile);
-        while(tile != this.startTile){
+        while(tile != this.startNode){
             tile = tile.tileParent;
             this.pathArray.unshift(tile);
         }
     }
 
+    public getpath():any{
+        return this.pathArray;
+    }
 
-    private emanhattan(tile:Tile):number {
-        return Math.abs(tile.x - this.endTile.tileData.x) * this.straightCost +
-        Math.abs(tile.y + this.endTile.tileData.y) * this.straightCost;
+    private manhattan(tile:Tile):number {
+        return Math.abs(tile.x - this.endNode.tileData.x) * this.straightCost +
+        Math.abs(tile.y + this.endNode.tileData.y) * this.straightCost;
     }
 
     private euclidian(tile:Tile):number
     {
-        var dx:number = tile.x - this.endTile.tileData.x;
-        var dy:number = tile.y - this.endTile.tileData.y;
+        var dx:number = tile.x - this.endNode.tileData.x;
+        var dy:number = tile.y - this.endNode.tileData.y;
         return Math.sqrt(dx * dx + dy * dy) * this.straightCost;
     }
 
     private diagonal(tile:Tile):number
     {
-        var dx:number = Math.abs(tile.tileData.x - this.endTile.tileData.x);
-        var dy:number = Math.abs(tile.tileData.y - this.endTile.tileData.y);
+        var dx:number = Math.abs(tile.tileData.x - this.endNode.tileData.x);
+        var dy:number = Math.abs(tile.tileData.y - this.endNode.tileData.y);
         var diag:number = Math.min(dx, dy);
         var straight:number = dx + dy;
         return this.diagCost * diag + this.straightCost * (straight - 2 * diag);
+    }
+
+    public getvisited(): any{
+        return this._closed.concat(this._open);
     }
 
 }

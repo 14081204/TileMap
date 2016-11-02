@@ -2,8 +2,8 @@ class TileMap extends egret.DisplayObjectContainer{
 
     private size = 2;
     private TextruesSize = 64;
-    public startTile : Tile;
-    public endTile : Tile;
+    public startNode : Tile;
+    public endNode : Tile;
     public numCols:number;
     public numRows:number;
     public tileArray : Tile[];
@@ -15,8 +15,8 @@ class TileMap extends egret.DisplayObjectContainer{
         // this.height = this.size * this.TextruesSize;
         this.tileArray = [];
         this.init();
-        this.startTile = this.tileArray[0];
-        this.endTile = this.tileArray[0];
+        this.startNode = this.tileArray[0];
+        this.endNode = this.tileArray[0];
         this.numCols = 10;
         this.numRows = 10;
         
@@ -24,115 +24,115 @@ class TileMap extends egret.DisplayObjectContainer{
     
     private init(){
         var config : TileData[] = [
-        { x:0, y:0, walkable: true, pictureName: "road2_jpg", f : 0 , g : 0, h : 0 , costMultiplier :1.0},
-			{ x:1, y:0, walkable: true, pictureName: "road2_jpg", f : 0 , g : 0, h : 0 , costMultiplier :1.0},
-			{ x:2, y:0, walkable: true, pictureName: "road2_jpg", f : 0 , g : 0, h : 0 , costMultiplier :1.0},
-			{ x:3, y:0, walkable: true, pictureName: "road2_jpg", f : 0 , g : 0, h : 0 , costMultiplier :1.0},
-			{ x:4, y:0, walkable: false, pictureName: "tree1_jpg", f : 0 , g : 0, h : 0 , costMultiplier :1.0},
-			{ x:5, y:0, walkable: true, pictureName: "road2_jpg", f : 0 , g : 0, h : 0 , costMultiplier :1.0},
-			{ x:6, y:0, walkable: true, pictureName: "road2_jpg", f : 0 , g : 0, h : 0 , costMultiplier :1.0},
-			{ x:7, y:0, walkable: true, pictureName: "road2_jpg", f : 0 , g : 0, h : 0 , costMultiplier :1.0},
-			{ x:8, y:0, walkable: true, pictureName: "road2_jpg", f : 0 , g : 0, h : 0 , costMultiplier :1.0},
-			{ x:9, y:0, walkable: true, pictureName: "road2_jpg", f : 0 , g : 0, h : 0 , costMultiplier :1.0},
+        { x:0, y:0, walkable: true, imageName: "road2_jpg", f : 0 , g : 0, h : 0 },
+			{ x:1, y:0, walkable: true, imageName: "road2_jpg", f : 0 , g : 0, h : 0 },
+			{ x:2, y:0, walkable: true, imageName: "road2_jpg", f : 0 , g : 0, h : 0 },
+			{ x:3, y:0, walkable: true, imageName: "road2_jpg", f : 0 , g : 0, h : 0 },
+			{ x:4, y:0, walkable: false, imageName: "tree1_jpg", f : 0 , g : 0, h : 0 },
+			{ x:5, y:0, walkable: true, imageName: "road2_jpg", f : 0 , g : 0, h : 0 },
+			{ x:6, y:0, walkable: true, imageName: "road2_jpg", f : 0 , g : 0, h : 0 },
+			{ x:7, y:0, walkable: true, imageName: "road2_jpg", f : 0 , g : 0, h : 0 },
+			{ x:8, y:0, walkable: true, imageName: "road2_jpg", f : 0 , g : 0, h : 0 },
+			{ x:9, y:0, walkable: true, imageName: "road2_jpg", f : 0 , g : 0, h : 0 },
 
-			{ x:0, y:1, walkable: true, pictureName: "road2_jpg", f : 0 , g : 0, h : 0 , costMultiplier :1.0},
-			{ x:1, y:1, walkable: false, pictureName: "wall1_jpg", f : 0 , g : 0, h : 0 , costMultiplier :1.0},
-			{ x:2, y:1, walkable: true, pictureName: "grass1_jpg", f : 0 , g : 0, h : 0 , costMultiplier :1.0},
-			{ x:3, y:1, walkable: true, pictureName: "grass1_jpg", f : 0 , g : 0, h : 0 , costMultiplier :1.0},
-			{ x:4, y:1, walkable: true, pictureName: "grass1_jpg", f : 0 , g : 0, h : 0 , costMultiplier :1.0},
-			{ x:5, y:1, walkable: true, pictureName: "grass1_jpg", f : 0 , g : 0, h : 0 , costMultiplier :1.0},
-			{ x:6, y:1, walkable: true, pictureName: "grass1_jpg", f : 0 , g : 0, h : 0 , costMultiplier :1.0},
-			{ x:7, y:1, walkable: false, pictureName: "wall1_jpg", f : 0 , g : 0, h : 0 , costMultiplier :1.0},
-			{ x:8, y:1, walkable: true, pictureName: "grass1_jpg", f : 0 , g : 0, h : 0 , costMultiplier :1.0},
-			{ x:9, y:1, walkable: true, pictureName: "road2_jpg", f : 0 , g : 0, h : 0 , costMultiplier :1.0},
+			{ x:0, y:1, walkable: true, imageName: "road2_jpg", f : 0 , g : 0, h : 0 },
+			{ x:1, y:1, walkable: false, imageName: "wall1_jpg", f : 0 , g : 0, h : 0 },
+			{ x:2, y:1, walkable: true, imageName: "grass1_jpg", f : 0 , g : 0, h : 0 },
+			{ x:3, y:1, walkable: true, imageName: "grass1_jpg", f : 0 , g : 0, h : 0 },
+			{ x:4, y:1, walkable: true, imageName: "grass1_jpg", f : 0 , g : 0, h : 0 },
+			{ x:5, y:1, walkable: true, imageName: "grass1_jpg", f : 0 , g : 0, h : 0 },
+			{ x:6, y:1, walkable: true, imageName: "grass1_jpg", f : 0 , g : 0, h : 0 },
+			{ x:7, y:1, walkable: false, imageName: "wall1_jpg", f : 0 , g : 0, h : 0 },
+			{ x:8, y:1, walkable: true, imageName: "grass1_jpg", f : 0 , g : 0, h : 0 },
+			{ x:9, y:1, walkable: true, imageName: "road2_jpg", f : 0 , g : 0, h : 0 },
 
-			{ x:0, y:2, walkable: true, pictureName: "road2_jpg", f : 0 , g : 0, h : 0 , costMultiplier :1.0},
-			{ x:1, y:2, walkable: false, pictureName: "wall1_jpg", f : 0 , g : 0, h : 0 , costMultiplier :1.0},
-			{ x:2, y:2, walkable: true, pictureName: "grass1_jpg", f : 0 , g : 0, h : 0 , costMultiplier :1.0},
-			{ x:3, y:2, walkable: true, pictureName: "grass1_jpg", f : 0 , g : 0, h : 0 , costMultiplier :1.0},
-			{ x:4, y:2, walkable: true, pictureName: "grass1_jpg", f : 0 , g : 0, h : 0 , costMultiplier :1.0},
-			{ x:5, y:2, walkable: false, pictureName: "tree1_jpg", f : 0 , g : 0, h : 0 , costMultiplier :1.0},
-			{ x:6, y:2, walkable: false, pictureName: "wall1_jpg", f : 0 , g : 0, h : 0 , costMultiplier :1.0},
-			{ x:7, y:2, walkable: true, pictureName: "grass1_jpg", f : 0 , g : 0, h : 0 , costMultiplier :1.0},
-			{ x:8, y:2, walkable: false, pictureName: "wall1_jpg", f : 0 , g : 0, h : 0 , costMultiplier :1.0},
-			{ x:9, y:2, walkable: true, pictureName: "road2_jpg", f : 0 , g : 0, h : 0 , costMultiplier :1.0},
+			{ x:0, y:2, walkable: true, imageName: "road2_jpg", f : 0 , g : 0, h : 0 },
+			{ x:1, y:2, walkable: false, imageName: "wall1_jpg", f : 0 , g : 0, h : 0 },
+			{ x:2, y:2, walkable: true, imageName: "grass1_jpg", f : 0 , g : 0, h : 0  },
+			{ x:3, y:2, walkable: true, imageName: "grass1_jpg", f : 0 , g : 0, h : 0  },
+			{ x:4, y:2, walkable: true, imageName: "grass1_jpg", f : 0 , g : 0, h : 0  },
+			{ x:5, y:2, walkable: false, imageName: "tree1_jpg", f : 0 , g : 0, h : 0  },
+			{ x:6, y:2, walkable: false, imageName: "wall1_jpg", f : 0 , g : 0, h : 0  },
+			{ x:7, y:2, walkable: true, imageName: "grass1_jpg", f : 0 , g : 0, h : 0  },
+			{ x:8, y:2, walkable: false, imageName: "wall1_jpg", f : 0 , g : 0, h : 0  },
+			{ x:9, y:2, walkable: true, imageName: "road2_jpg", f : 0 , g : 0, h : 0  },
 
-			{ x:0, y:3, walkable: true, pictureName: "road2_jpg", f : 0 , g : 0, h : 0 , costMultiplier :1.0},
-			{ x:1, y:3, walkable: false, pictureName: "wall1_jpg", f : 0 , g : 0, h : 0 , costMultiplier :1.0},
-			{ x:2, y:3, walkable: true, pictureName: "grass1_jpg", f : 0 , g : 0, h : 0 , costMultiplier :1.0},
-			{ x:3, y:3, walkable: true, pictureName: "grass1_jpg", f : 0 , g : 0, h : 0 , costMultiplier :1.0},
-			{ x:4, y:3, walkable: true, pictureName: "grass1_jpg", f : 0 , g : 0, h : 0 , costMultiplier :1.0},
-			{ x:5, y:3, walkable: true, pictureName: "grass1_jpg", f : 0 , g : 0, h : 0 , costMultiplier :1.0},
-			{ x:6, y:3, walkable: false, pictureName: "wall1_jpg", f : 0 , g : 0, h : 0 , costMultiplier :1.0},
-			{ x:7, y:3, walkable: true, pictureName: "grass1_jpg", f : 0 , g : 0, h : 0 , costMultiplier :1.0},
-			{ x:8, y:3, walkable: false, pictureName: "wall1_jpg", f : 0 , g : 0, h : 0 , costMultiplier :1.0},
-			{ x:9, y:3, walkable: true, pictureName: "road2_jpg", f : 0 , g : 0, h : 0 , costMultiplier :1.0},
+			{ x:0, y:3, walkable: true, imageName: "road2_jpg", f : 0 , g : 0, h : 0  },
+			{ x:1, y:3, walkable: false, imageName: "wall1_jpg", f : 0 , g : 0, h : 0  },
+			{ x:2, y:3, walkable: true, imageName: "grass1_jpg", f : 0 , g : 0, h : 0  },
+			{ x:3, y:3, walkable: true, imageName: "grass1_jpg", f : 0 , g : 0, h : 0  },
+			{ x:4, y:3, walkable: true, imageName: "grass1_jpg", f : 0 , g : 0, h : 0  },
+			{ x:5, y:3, walkable: true, imageName: "grass1_jpg", f : 0 , g : 0, h : 0  },
+			{ x:6, y:3, walkable: false, imageName: "wall1_jpg", f : 0 , g : 0, h : 0  },
+			{ x:7, y:3, walkable: true, imageName: "grass1_jpg", f : 0 , g : 0, h : 0  },
+			{ x:8, y:3, walkable: false, imageName: "wall1_jpg", f : 0 , g : 0, h : 0  },
+			{ x:9, y:3, walkable: true, imageName: "road2_jpg", f : 0 , g : 0, h : 0  },
 
-			{ x:0, y:4, walkable: true, pictureName: "road2_jpg", f : 0 , g : 0, h : 0 , costMultiplier :1.0},
-			{ x:1, y:4, walkable: false, pictureName: "wall1_jpg", f : 0 , g : 0, h : 0 , costMultiplier :1.0},
-			{ x:2, y:4, walkable: false, pictureName: "wall1_jpg", f : 0 , g : 0, h : 0 , costMultiplier :1.0},
-			{ x:3, y:4, walkable: false, pictureName: "wall1_jpg", f : 0 , g : 0, h : 0 , costMultiplier :1.0},
-			{ x:4, y:4, walkable: false, pictureName: "tree1_jpg", f : 0 , g : 0, h : 0 , costMultiplier :1.0},
-			{ x:5, y:4, walkable: true, pictureName: "grass1_jpg", f : 0 , g : 0, h : 0 , costMultiplier :1.0},
-			{ x:6, y:4, walkable: false, pictureName: "wall1_jpg", f : 0 , g : 0, h : 0 , costMultiplier :1.0},
-			{ x:7, y:4, walkable: true, pictureName: "grass1_jpg", f : 0 , g : 0, h : 0 , costMultiplier :1.0},
-			{ x:8, y:4, walkable: false, pictureName: "wall1_jpg", f : 0 , g : 0, h : 0 , costMultiplier :1.0},
-			{ x:9, y:4, walkable: true, pictureName: "road2_jpg", f : 0 , g : 0, h : 0 , costMultiplier :1.0},
+			{ x:0, y:4, walkable: true, imageName: "road2_jpg", f : 0 , g : 0, h : 0  },
+			{ x:1, y:4, walkable: false, imageName: "wall1_jpg", f : 0 , g : 0, h : 0  },
+			{ x:2, y:4, walkable: false, imageName: "wall1_jpg", f : 0 , g : 0, h : 0  },
+			{ x:3, y:4, walkable: false, imageName: "wall1_jpg", f : 0 , g : 0, h : 0  },
+			{ x:4, y:4, walkable: false, imageName: "tree1_jpg", f : 0 , g : 0, h : 0  },
+			{ x:5, y:4, walkable: true, imageName: "grass1_jpg", f : 0 , g : 0, h : 0  },
+			{ x:6, y:4, walkable: false, imageName: "wall1_jpg", f : 0 , g : 0, h : 0  },
+			{ x:7, y:4, walkable: true, imageName: "grass1_jpg", f : 0 , g : 0, h : 0  },
+			{ x:8, y:4, walkable: false, imageName: "wall1_jpg", f : 0 , g : 0, h : 0  },
+			{ x:9, y:4, walkable: true, imageName: "road2_jpg", f : 0 , g : 0, h : 0  },
 
-			{ x:0, y:5, walkable: true, pictureName: "road2_jpg", f : 0 , g : 0, h : 0 , costMultiplier :1.0},
-			{ x:1, y:5, walkable: true, pictureName: "road1_jpg", f : 0 , g : 0, h : 0 , costMultiplier :1.0},
-			{ x:2, y:5, walkable: true, pictureName: "road1_jpg", f : 0 , g : 0, h : 0 , costMultiplier :1.0},
-			{ x:3, y:5, walkable: true, pictureName: "road1_jpg", f : 0 , g : 0, h : 0 , costMultiplier :1.0},
-			{ x:4, y:5, walkable: true, pictureName: "road1_jpg", f : 0 , g : 0, h : 0 , costMultiplier :1.0},
-			{ x:5, y:5, walkable: true, pictureName: "road1_jpg", f : 0 , g : 0, h : 0 , costMultiplier :1.0},
-			{ x:6, y:5, walkable: true, pictureName: "road1_jpg", f : 0 , g : 0, h : 0 , costMultiplier :1.0},
-			{ x:7, y:5, walkable: true, pictureName: "road1_jpg", f : 0 , g : 0, h : 0 , costMultiplier :1.0},
-			{ x:8, y:5, walkable: true, pictureName: "road1_jpg", f : 0 , g : 0, h : 0 , costMultiplier :1.0},
-			{ x:9, y:5, walkable: true, pictureName: "road2_jpg", f : 0 , g : 0, h : 0 , costMultiplier :1.0},
+			{ x:0, y:5, walkable: true, imageName: "road2_jpg", f : 0 , g : 0, h : 0  },
+			{ x:1, y:5, walkable: true, imageName: "road1_jpg", f : 0 , g : 0, h : 0  },
+			{ x:2, y:5, walkable: true, imageName: "road1_jpg", f : 0 , g : 0, h : 0  },
+			{ x:3, y:5, walkable: true, imageName: "road1_jpg", f : 0 , g : 0, h : 0  },
+			{ x:4, y:5, walkable: true, imageName: "road1_jpg", f : 0 , g : 0, h : 0  },
+			{ x:5, y:5, walkable: true, imageName: "road1_jpg", f : 0 , g : 0, h : 0  },
+			{ x:6, y:5, walkable: true, imageName: "road1_jpg", f : 0 , g : 0, h : 0  },
+			{ x:7, y:5, walkable: true, imageName: "road1_jpg", f : 0 , g : 0, h : 0  },
+			{ x:8, y:5, walkable: true, imageName: "road1_jpg", f : 0 , g : 0, h : 0  },
+			{ x:9, y:5, walkable: true, imageName: "road2_jpg", f : 0 , g : 0, h : 0  },
 
-			{ x:0, y:6, walkable: true, pictureName: "road2_jpg", f : 0 , g : 0, h : 0 , costMultiplier :1.0},
-			{ x:1, y:6, walkable: false, pictureName: "tree1_jpg", f : 0 , g : 0, h : 0 , costMultiplier :1.0},
-			{ x:2, y:6, walkable: true, pictureName: "grass1_jpg", f : 0 , g : 0, h : 0 , costMultiplier :1.0},
-			{ x:3, y:6, walkable: false, pictureName: "wall1_jpg", f : 0 , g : 0, h : 0 , costMultiplier :1.0},
-			{ x:4, y:6, walkable: true, pictureName: "grass1_jpg", f : 0 , g : 0, h : 0 , costMultiplier :1.0},
-			{ x:5, y:6, walkable: false, pictureName: "tree1_jpg", f : 0 , g : 0, h : 0 , costMultiplier :1.0},
-			{ x:6, y:6, walkable: false, pictureName: "wall1_jpg", f : 0 , g : 0, h : 0 , costMultiplier :1.0},
-			{ x:7, y:6, walkable: true, pictureName: "grass1_jpg", f : 0 , g : 0, h : 0 , costMultiplier :1.0},
-			{ x:8, y:6, walkable: false, pictureName: "tree1_jpg", f : 0 , g : 0, h : 0 , costMultiplier :1.0},
-			{ x:9, y:6, walkable: true, pictureName: "road2_jpg", f : 0 , g : 0, h : 0 , costMultiplier :1.0},
+			{ x:0, y:6, walkable: true, imageName: "road2_jpg", f : 0 , g : 0, h : 0  },
+			{ x:1, y:6, walkable: false, imageName: "tree1_jpg", f : 0 , g : 0, h : 0  },
+			{ x:2, y:6, walkable: true, imageName: "grass2_jpg", f : 0 , g : 0, h : 0  },
+			{ x:3, y:6, walkable: false, imageName: "wall2_jpg", f : 0 , g : 0, h : 0  },
+			{ x:4, y:6, walkable: true, imageName: "grass2_jpg", f : 0 , g : 0, h : 0  },
+			{ x:5, y:6, walkable: false, imageName: "tree1_jpg", f : 0 , g : 0, h : 0  },
+			{ x:6, y:6, walkable: false, imageName: "wall2_jpg", f : 0 , g : 0, h : 0  },
+			{ x:7, y:6, walkable: true, imageName: "grass2_jpg", f : 0 , g : 0, h : 0  },
+			{ x:8, y:6, walkable: false, imageName: "tree1_jpg", f : 0 , g : 0, h : 0  },
+			{ x:9, y:6, walkable: true, imageName: "road2_jpg", f : 0 , g : 0, h : 0  },
 
-			{ x:0, y:7, walkable: true, pictureName: "road2_jpg", f : 0 , g : 0, h : 0 , costMultiplier :1.0},
-			{ x:1, y:7, walkable: true, pictureName: "grass1_jpg", f : 0 , g : 0, h : 0 , costMultiplier :1.0},
-			{ x:2, y:7, walkable: true, pictureName: "grass1_jpg", f : 0 , g : 0, h : 0 , costMultiplier :1.0},
-			{ x:3, y:7, walkable: false, pictureName: "wall1_jpg", f : 0 , g : 0, h : 0 , costMultiplier :1.0},
-			{ x:4, y:7, walkable: true, pictureName: "grass1_jpg", f : 0 , g : 0, h : 0 , costMultiplier :1.0},
-			{ x:5, y:7, walkable: true, pictureName: "grass1_jpg", f : 0 , g : 0, h : 0 , costMultiplier :1.0},
-			{ x:6, y:7, walkable: false, pictureName: "wall1_jpg", f : 0 , g : 0, h : 0 , costMultiplier :1.0},
-			{ x:7, y:7, walkable: true, pictureName: "grass1_jpg", f : 0 , g : 0, h : 0 , costMultiplier :1.0},
-			{ x:8, y:7, walkable: true, pictureName: "grass1_jpg", f : 0 , g : 0, h : 0 , costMultiplier :1.0},
-			{ x:9, y:7, walkable: true, pictureName: "road2_jpg", f : 0 , g : 0, h : 0 , costMultiplier :1.0},
+			{ x:0, y:7, walkable: true, imageName: "road2_jpg", f : 0 , g : 0, h : 0  },
+			{ x:1, y:7, walkable: true, imageName: "grass2_jpg", f : 0 , g : 0, h : 0  },
+			{ x:2, y:7, walkable: true, imageName: "grass2_jpg", f : 0 , g : 0, h : 0  },
+			{ x:3, y:7, walkable: false, imageName: "wall2_jpg", f : 0 , g : 0, h : 0  },
+			{ x:4, y:7, walkable: true, imageName: "grass2_jpg", f : 0 , g : 0, h : 0  },
+			{ x:5, y:7, walkable: true, imageName: "grass2_jpg", f : 0 , g : 0, h : 0  },
+			{ x:6, y:7, walkable: false, imageName: "wall2_jpg", f : 0 , g : 0, h : 0  },
+			{ x:7, y:7, walkable: true, imageName: "grass2_jpg", f : 0 , g : 0, h : 0  },
+			{ x:8, y:7, walkable: true, imageName: "grass2_jpg", f : 0 , g : 0, h : 0  },
+			{ x:9, y:7, walkable: true, imageName: "road2_jpg", f : 0 , g : 0, h : 0  },
 
-			{ x:0, y:8, walkable: false, pictureName: "tree1_jpg", f : 0 , g : 0, h : 0 , costMultiplier :1.0},
-			{ x:1, y:8, walkable: true, pictureName: "grass1_jpg", f : 0 , g : 0, h : 0 , costMultiplier :1.0},
-			{ x:2, y:8, walkable: true, pictureName: "grass1_jpg", f : 0 , g : 0, h : 0 , costMultiplier :1.0},
-			{ x:3, y:8, walkable: true, pictureName: "grass1_jpg", f : 0 , g : 0, h : 0 , costMultiplier :1.0},
-			{ x:4, y:8, walkable: false, pictureName: "wall1_jpg", f : 0 , g : 0, h : 0 , costMultiplier :1.0},
-			{ x:5, y:8, walkable: false, pictureName: "wall1_jpg", f : 0 , g : 0, h : 0 , costMultiplier :1.0},
-			{ x:6, y:8, walkable: true, pictureName: "grass1_jpg", f : 0 , g : 0, h : 0 , costMultiplier :1.0},
-			{ x:7, y:8, walkable: true, pictureName: "grass1_jpg", f : 0 , g : 0, h : 0 , costMultiplier :1.0},
-			{ x:8, y:8, walkable: true, pictureName: "grass1_jpg", f : 0 , g : 0, h : 0 , costMultiplier :1.0},
-			{ x:9, y:8, walkable: false, pictureName: "tree1_jpg", f : 0 , g : 0, h : 0 , costMultiplier :1.0},
+			{ x:0, y:8, walkable: false, imageName: "tree1_jpg", f : 0 , g : 0, h : 0  },
+			{ x:1, y:8, walkable: true, imageName: "grass2_jpg", f : 0 , g : 0, h : 0  },
+			{ x:2, y:8, walkable: true, imageName: "grass2_jpg", f : 0 , g : 0, h : 0  },
+			{ x:3, y:8, walkable: true, imageName: "grass2_jpg", f : 0 , g : 0, h : 0  },
+			{ x:4, y:8, walkable: false, imageName: "wall2_jpg", f : 0 , g : 0, h : 0  },
+			{ x:5, y:8, walkable: false, imageName: "wall2_jpg", f : 0 , g : 0, h : 0  },
+			{ x:6, y:8, walkable: true, imageName: "grass2_jpg", f : 0 , g : 0, h : 0  },
+			{ x:7, y:8, walkable: true, imageName: "grass2_jpg", f : 0 , g : 0, h : 0  },
+			{ x:8, y:8, walkable: true, imageName: "grass2_jpg", f : 0 , g : 0, h : 0  },
+			{ x:9, y:8, walkable: false, imageName: "tree1_jpg", f : 0 , g : 0, h : 0  },
 
-			{ x:0, y:9, walkable: true, pictureName: "road2_jpg", f : 0 , g : 0, h : 0 , costMultiplier :1.0},
-			{ x:1, y:9, walkable: true, pictureName: "road1_jpg", f : 0 , g : 0, h : 0 , costMultiplier :1.0},
-			{ x:2, y:9, walkable: false, pictureName: "tree2_jpg", f : 0 , g : 0, h : 0 , costMultiplier :1.0},
-			{ x:3, y:9, walkable: true, pictureName: "road1_jpg", f : 0 , g : 0, h : 0 , costMultiplier :1.0},
-			{ x:4, y:9, walkable: true, pictureName: "road1_jpg", f : 0 , g : 0, h : 0 , costMultiplier :1.0},
-			{ x:5, y:9, walkable: true, pictureName: "road1_jpg", f : 0 , g : 0, h : 0 , costMultiplier :1.0},
-			{ x:6, y:9, walkable: true, pictureName: "road1_jpg", f : 0 , g : 0, h : 0 , costMultiplier :1.0},
-			{ x:7, y:9, walkable: false, pictureName: "tree2_jpg", f : 0 , g : 0, h : 0 , costMultiplier :1.0},
-			{ x:8, y:9, walkable: true, pictureName: "road1_jpg", f : 0 , g : 0, h : 0 , costMultiplier :1.0},
-			{ x:9, y:9, walkable: true, pictureName: "road2_jpg", f : 0 , g : 0, h : 0 , costMultiplier :1.0},
+			{ x:0, y:9, walkable: true, imageName: "road2_jpg", f : 0 , g : 0, h : 0  },
+			{ x:1, y:9, walkable: true, imageName: "road1_jpg", f : 0 , g : 0, h : 0  },
+			{ x:2, y:9, walkable: false, imageName: "tree2_jpg", f : 0 , g : 0, h : 0  },
+			{ x:3, y:9, walkable: true, imageName: "road1_jpg", f : 0 , g : 0, h : 0  },
+			{ x:4, y:9, walkable: true, imageName: "road1_jpg", f : 0 , g : 0, h : 0  },
+			{ x:5, y:9, walkable: true, imageName: "road1_jpg", f : 0 , g : 0, h : 0  },
+			{ x:6, y:9, walkable: true, imageName: "road1_jpg", f : 0 , g : 0, h : 0  },
+			{ x:7, y:9, walkable: false, imageName: "tree2_jpg", f : 0 , g : 0, h : 0  },
+			{ x:8, y:9, walkable: true, imageName: "road1_jpg", f : 0 , g : 0, h : 0  },
+			{ x:9, y:9, walkable: true, imageName: "road2_jpg", f : 0 , g : 0, h : 0  },
 
     ]
 
@@ -162,7 +162,7 @@ class TileMap extends egret.DisplayObjectContainer{
                   break;
               }
         }
-        this.startTile = this.tileArray[i];
+        this.startNode = this.tileArray[i];
 
     }
 
@@ -172,7 +172,7 @@ class TileMap extends egret.DisplayObjectContainer{
                   break;
               }
         }
-        this.endTile = this.tileArray[i];
+        this.endNode = this.tileArray[i];
 
     }
 
@@ -185,7 +185,7 @@ class TileMap extends egret.DisplayObjectContainer{
     }
 
     public getStartTile():any{
-        return this.startTile;
+        return this.startNode;
     }
     
 
@@ -205,7 +205,7 @@ class Tile extends egret.DisplayObjectContainer{
         this.tileData = tiledata;
         this.bitmaps = new egret.Bitmap();
         this.addChild(this.bitmaps);
-        this.bitmaps.texture = RES.getRes(tiledata.pictureName); 
+        this.bitmaps.texture = RES.getRes(tiledata.imageName); 
         this.bitmaps.width = this.bitmapSize;
         this.bitmaps.height = this.bitmapSize;
 
@@ -216,10 +216,10 @@ class TileData{
     public x : number;
     public y : number;
     public walkable : boolean;
-    public pictureName : string;
+    public imageName : string;
     public  f:number;
     public  g:number;
     public  h:number;
-    public  costMultiplier:number = 1.0;
+    //public  costMultiplier:number = 1.0;
 
 }

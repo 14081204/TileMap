@@ -13,16 +13,16 @@ var AStar = (function () {
         this.tileMap = tileMap;
         this._open = [];
         this._closed = [];
-        this.startTile = tileMap.startTile;
-        this.endTile = tileMap.endTile;
-        this.startTile.tileData.g = 0;
-        this.startTile.tileData.h = this.heuristic(this.startTile);
-        this.startTile.tileData.f = this.startTile.tileData.g + this.startTile.tileData.h;
+        this.startNode = tileMap.startNode;
+        this.endNode = tileMap.endNode;
+        this.startNode.tileData.g = 0;
+        this.startNode.tileData.h = this.heuristic(this.startNode);
+        this.startNode.tileData.f = this.startNode.tileData.g + this.startNode.tileData.h;
         return this.search();
     };
     p.isOpen = function (tile) {
         for (var i = 0; i < this._open.length; i++) {
-            if (tile == this._open[i]) {
+            if (this._open[i] == tile) {
                 return true;
             }
         }
@@ -30,7 +30,7 @@ var AStar = (function () {
     };
     p.isClosed = function (tile) {
         for (var i = 0; i < this._closed.length; i++) {
-            if (tile == this._closed[i]) {
+            if (this._closed[i] == tile) {
                 return true;
             }
         }
@@ -52,8 +52,8 @@ var AStar = (function () {
         return temp;
     };
     p.search = function () {
-        var tile = this.startTile;
-        while (tile != this.endTile) {
+        var tile = this.startNode;
+        while (tile != this.endNode) {
             var startX = Math.max(0, tile.tileData.x - 1);
             var endX = Math.min(this.tileMap.numCols - 1, tile.tileData.x + 1);
             var startY = Math.max(0, tile.tileData.y - 1);
@@ -65,10 +65,12 @@ var AStar = (function () {
                         continue;
                     }
                     var cost = this.straightCost;
+                    //if(!((tile.tileData.x == test.tileData.x) || (tile.tileData.y == test.tileData.y))){
                     if (!((tile.tileData.x == test.tileData.x) || (tile.tileData.y == test.tileData.y))) {
                         cost = this.diagCost;
                     }
-                    var g = tile.tileData.g + cost * test.tileData.costMultiplier;
+                    //var g:number = tile.tileData.g + cost * test.tileData.costMultiplier;                    
+                    var g = tile.tileData.g + cost;
                     var h = this.heuristic(test);
                     var f = g + h;
                     if (this.isOpen(test) || this.isClosed(test)) {
@@ -99,28 +101,35 @@ var AStar = (function () {
         return true;
     };
     p.buildPath = function () {
-        var tile = this.endTile;
+        this.pathArray = new Array();
+        var tile = this.endNode;
         this.pathArray.push(tile);
-        while (tile != this.startTile) {
+        while (tile != this.startNode) {
             tile = tile.tileParent;
             this.pathArray.unshift(tile);
         }
     };
-    p.emanhattan = function (tile) {
-        return Math.abs(tile.x - this.endTile.tileData.x) * this.straightCost +
-            Math.abs(tile.y + this.endTile.tileData.y) * this.straightCost;
+    p.getpath = function () {
+        return this.pathArray;
+    };
+    p.manhattan = function (tile) {
+        return Math.abs(tile.x - this.endNode.tileData.x) * this.straightCost +
+            Math.abs(tile.y + this.endNode.tileData.y) * this.straightCost;
     };
     p.euclidian = function (tile) {
-        var dx = tile.x - this.endTile.tileData.x;
-        var dy = tile.y - this.endTile.tileData.y;
+        var dx = tile.x - this.endNode.tileData.x;
+        var dy = tile.y - this.endNode.tileData.y;
         return Math.sqrt(dx * dx + dy * dy) * this.straightCost;
     };
     p.diagonal = function (tile) {
-        var dx = Math.abs(tile.tileData.x - this.endTile.tileData.x);
-        var dy = Math.abs(tile.tileData.y - this.endTile.tileData.y);
+        var dx = Math.abs(tile.tileData.x - this.endNode.tileData.x);
+        var dy = Math.abs(tile.tileData.y - this.endNode.tileData.y);
         var diag = Math.min(dx, dy);
         var straight = dx + dy;
         return this.diagCost * diag + this.straightCost * (straight - 2 * diag);
+    };
+    p.getvisited = function () {
+        return this._closed.concat(this._open);
     };
     return AStar;
 }());

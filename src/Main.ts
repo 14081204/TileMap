@@ -118,11 +118,11 @@ class Main extends egret.DisplayObjectContainer {
     private DistancePoint : egret.Point = new egret.Point();
     private Stage01Background : egret.Bitmap;
     private MoveTime = 0;
-    private map01 : TileMap;
+    private map : TileMap;
     private astar : AStar;
-    private tileX : number;
-    private tileY : number;
-    private tileSize = 64;
+    private gridX : number;
+    private gridY : number;
+    private TILE_SIZE = 64;
     private ifFindAWay : boolean = false;
     private currentPath : number = 0;
     private movingTime = 32;
@@ -142,32 +142,32 @@ class Main extends egret.DisplayObjectContainer {
         var stageW:number = this.stage.stageWidth;
         var stageH:number = this.stage.stageHeight;
 
-        this.map01 = new TileMap();
-        this.addChild(this.map01);
+        this.map = new TileMap();
+        this.addChild(this.map);
         this.addChild(this.Player.PersonBitmap);
         this.Player.PersonBitmap.x = 0;
         this.Player.PersonBitmap.y = 0;
 
-        this.map01.startTile = this.map01.getTile(0,0);
-        this.map01.endTile = this.map01.getTile(0,0);
+        this.map.startNode = this.map.getTile(0,0);
+        this.map.endNode = this.map.getTile(0,0);
 
         this.astar = new AStar();
 
         this.stage.addEventListener(egret.TouchEvent.TOUCH_BEGIN,(e : egret.TouchEvent)=>{
             this.ifStartMove = true;
-            this.playerx = Math.floor(this.Player.PersonBitmap.x / this.tileSize);
-            this.playery = Math.floor(this.Player.PersonBitmap.y / this.tileSize);
+            this.playerx = Math.floor(this.Player.PersonBitmap.x / this.TILE_SIZE);
+            this.playery = Math.floor(this.Player.PersonBitmap.y / this.TILE_SIZE);
             this.playerBitX = this.Player.PersonBitmap.x;
             this.playerBitY = this.Player.PersonBitmap.y;
-            this.map01.startTile = this.map01.getTile(this.playerx,this.playery);
+            this.map.startNode = this.map.getTile(this.playerx,this.playery);
             this.currentPath = 0;
             this.EventPoint.x = e.stageX;
             this.EventPoint.y = e.stageY;
-            this.tileX = Math.floor(this.EventPoint.x / this.tileSize);
-            this.tileY = Math.floor(this.EventPoint.y / this.tileSize);
+            this.gridX = Math.floor(this.EventPoint.x / this.TILE_SIZE);
+            this.gridY = Math.floor(this.EventPoint.y / this.TILE_SIZE);
             
-            this.map01.endTile = this.map01.getTile(this.tileX,this.tileY);
-            this.ifFindAWay = this.astar.findPath(this.map01);
+            this.map.endNode = this.map.getTile(this.gridX,this.gridY);
+            this.ifFindAWay = this.astar.findPath(this.map);
             if(this.ifFindAWay){
                 this.Player.SetState(new WalkingState(),this);
                 this.currentPath = 0;
@@ -177,7 +177,7 @@ class Main extends egret.DisplayObjectContainer {
                 console.log(this.astar.pathArray[i].x + " And " + this.astar.pathArray[i].y);
             }
             if(this.ifFindAWay)
-                this.map01.startTile = this.map01.endTile;
+                this.map.startNode = this.map.endNode;
         },this)
         
             this.PlayerMove();
@@ -220,15 +220,15 @@ class Main extends egret.DisplayObjectContainer {
                 }
             }
             if(this.ifStartMove && !self.ifFindAWay){
-                var distanceX = self.map01.startTile.x - self.playerBitX;
-                var distanceY = self.map01.startTile.y - self.playerBitY;
+                var distanceX = self.map.startNode.x - self.playerBitX;
+                var distanceY = self.map.startNode.y - self.playerBitY;
                 if(distanceX > 0){
                     self.Player.SetRightOrLeftState(new GoRightState(),self);
                 }
                 if(distanceX <= 0){
                     self.Player.SetRightOrLeftState(new GoLeftState(),self);
                 }
-                if(!self.IfOnGoal(self.map01.startTile)){
+                if(!self.IfOnGoal(self.map.startNode)){
                     self.Player.PersonBitmap.x += distanceX / self.movingTime;
                     self.Player.PersonBitmap.y += distanceY / self.movingTime;
                 }
@@ -274,16 +274,16 @@ class Main extends egret.DisplayObjectContainer {
         var n = 0;
         var GOR = 0;
         var GOL = 0;
-        var zhen = 0;
-        var zhen2 = 0;
-        var zhen3 = 0;
+        var speed = 0;
+        var speed2 = 0;
+        var speed3 = 0;
         var standArr = ["stand_0001","stand_0002","stand_0003","stand_0004","stand_0005","stand_0006","stand_0007","stand_0008"];
         var walkRightArr = ["166-1","166-2","166-3","166-4","166-5","166-6","166-7","166-8"];
 
         var MoveAnimation:Function = function (){
                 
                 egret.Ticker.getInstance().register(()=>{
-                if(zhen % 4 == 0){
+                if(speed % 4 == 0){
                     
                     if(self.Player.GetIfIdle() && !self.Player.GetIfWalk()){
                     GOR = 0;
@@ -294,7 +294,7 @@ class Main extends egret.DisplayObjectContainer {
                     n++;
                     if(n >= standArr.length){
                           n=0;
-                          }
+                    }
                           }
                           
 
@@ -327,7 +327,7 @@ class Main extends egret.DisplayObjectContainer {
                     }
 
 
-                    if(self.IfOnGoal(self.map01.endTile)){
+                    if(self.IfOnGoal(self.map.endNode)){
                      self.Player.SetState(new IdleState(),self);
                     }
                 },self);
@@ -336,9 +336,9 @@ class Main extends egret.DisplayObjectContainer {
 
         var FramePlus : Function = function(){
             egret.Ticker.getInstance().register(()=>{
-            zhen++;
-            if(zhen == 400)
-            zhen = 0;
+            speed++;
+            if(speed == 400)
+            speed = 0;
             },self)
         }
 
